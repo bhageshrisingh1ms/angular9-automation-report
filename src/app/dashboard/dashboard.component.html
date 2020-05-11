@@ -1,0 +1,152 @@
+<div class="content-container">
+  <div class="search-area">
+    <form>
+      <!--
+      <div class="form-group row">
+        <div class="input-group col-sm-11">
+          Search
+        </div>
+      </div>
+      -->
+      <div class="form-group row">
+        <div class="input-group col-sm-3">
+          <input class="form-control" placeholder="yyyy-mm-dd"
+                 name="startDate" ngbDatepicker #startDate="ngbDatepicker">
+          <div class="input-group-append">
+            <button class="btn btn-outline-secondary calendar" (click)="startDate.toggle()" type="button"></button>
+          </div>
+        </div>
+        <div class="input-group col-sm-3">
+          <input class="form-control" placeholder="yyyy-mm-dd"
+                 name="endDate" ngbDatepicker #endDate="ngbDatepicker">
+          <div class="input-group-append">
+            <button class="btn btn-outline-secondary calendar" (click)="endDate.toggle()" type="button"></button>
+          </div>
+        </div>
+        <div class="col-sm-3">
+          <button class="btn btn-outline-primary">Search</button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <div class="table-container">
+  <ngb-tabset [destroyOnHide]="false">
+    <ngb-tab title="Project Violations">
+      <ng-template ngbTabContent>
+        <div class="table-container">
+          <form>
+            <div class="form-group form-inline">
+              Full text search: <input class="form-control ml-2" type="text" name="searchTerm" [(ngModel)]="service.searchTerm"/>
+              <span class="ml-3" *ngIf="service.loading$ | async">Loading...</span>
+              <div class="ml-auto">
+                <button class="btn btn-primary">
+                  Download
+                </button>
+              </div>
+            </div>
+            <table class="table table-striped">
+              <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col" sortable="name" (sort)="onSort($event)">Country</th>
+                <th scope="col" sortable="area" (sort)="onSort($event)">Area</th>
+                <th scope="col" sortable="population" (sort)="onSort($event)">Population</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr *ngFor="let country of countries$ | async">
+                <th scope="row">{{ country.id }}</th>
+                <td>
+                  <ngb-highlight [result]="country.name" [term]="service.searchTerm"></ngb-highlight>
+                </td>
+                <td><ngb-highlight [result]="country.area | number" [term]="service.searchTerm"></ngb-highlight></td>
+                <td><ngb-highlight [result]="country.population | number" [term]="service.searchTerm"></ngb-highlight></td>
+              </tr>
+              </tbody>
+            </table>
+
+            <div class="d-flex justify-content-between p-2">
+              <ngb-pagination
+                [collectionSize]="(total$ | async)!" [(page)]="service.page" [pageSize]="service.pageSize">
+              </ngb-pagination>
+
+              <select class="custom-select" style="width: auto" name="pageSize" [(ngModel)]="service.pageSize">
+                <option [ngValue]="2">2 items per page</option>
+                <option [ngValue]="4">4 items per page</option>
+                <option [ngValue]="6">6 items per page</option>
+              </select>
+            </div>
+
+          </form>
+        </div>
+      </ng-template>
+    </ngb-tab>
+    <ngb-tab>
+      <ng-template ngbTabTitle>Violations Summary</ng-template>
+      <ng-template ngbTabContent>
+        <div class="table-container">
+          <form>
+            <div class="form-group form-inline">
+              Full text search: <input class="form-control ml-2" type="text" name="searchTerm" [(ngModel)]="service.searchTerm"/>
+              <span class="ml-3" *ngIf="service.loading$ | async">Loading...</span>
+              <div class="ml-auto">
+                <button class="btn btn-primary">
+                  Download
+                </button>
+              </div>
+            </div>
+
+            <table class="table table-striped">
+              <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col" sortable="name" (sort)="onSort($event)">Country</th>
+                <th scope="col" sortable="area" (sort)="onSort($event)">Area</th>
+                <th scope="col" sortable="population" (sort)="onSort($event)">Population</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr *ngFor="let country of countries$ | async">
+                <th scope="row">{{ country.id }}</th>
+                <td>
+                  <ngb-highlight [result]="country.name" [term]="service.searchTerm"></ngb-highlight>
+                </td>
+                <td><ngb-highlight [result]="country.area | number" [term]="service.searchTerm"></ngb-highlight></td>
+                <td><ngb-highlight [result]="country.population | number" [term]="service.searchTerm"></ngb-highlight></td>
+              </tr>
+              </tbody>
+            </table>
+
+            <div class="d-flex justify-content-between p-2">
+              <ngb-pagination
+                [collectionSize]="(total$ | async)!" [(page)]="service.page" [pageSize]="service.pageSize">
+              </ngb-pagination>
+
+              <select class="custom-select" style="width: auto" name="pageSize" [(ngModel)]="service.pageSize">
+                <option [ngValue]="2">2 items per page</option>
+                <option [ngValue]="4">4 items per page</option>
+                <option [ngValue]="6">6 items per page</option>
+              </select>
+            </div>
+
+          </form>
+        </div>
+      </ng-template>
+    </ngb-tab>
+  </ngb-tabset>
+  </div>
+
+  <div class="table-container">
+
+  </div>
+
+
+  <!--
+    <select class="custom-select" style="width: auto" [(ngModel)]="pageSize">
+      <option [ngValue]="2">2 items per page</option>
+      <option [ngValue]="4">4 items per page</option>
+      <option [ngValue]="6">6 items per page</option>
+    </select>
+  -->
+</div>
